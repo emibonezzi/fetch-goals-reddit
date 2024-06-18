@@ -9,5 +9,6 @@ module.exports = async function (url) {
     return res.data.video_url;
   } catch (err) {
     console.log("Error in extracting video url...");
+    throw err;
   }
 };

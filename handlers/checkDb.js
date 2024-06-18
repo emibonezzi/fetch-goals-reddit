@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const getDirectUrl = require("./getDirectUrl");
+const resizeVideo = require("./resizeVideo");
 
 const goalSchema = new mongoose.Schema({
   title: String,
@@ -22,9 +23,11 @@ module.exports = async (titles) => {
       if (!existingNews) {
         // extract video url
         const directUrl = await getDirectUrl(titleObj.url);
+        // resize video
+        const videoUrlResized = await resizeVideo(directUrl);
         const news = new Goal({
           title: titleObj.title,
-          url: directUrl,
+          url: videoUrlResized,
         });
         await news.save();
         // add to updates arr
