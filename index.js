@@ -26,5 +26,3 @@ module.exports.handler = async function () {
 
   console.log(updates);
 };
-
-module.exports.handler();
