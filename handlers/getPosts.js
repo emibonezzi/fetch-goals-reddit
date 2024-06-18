@@ -5,15 +5,12 @@ module.exports = async (accessToken) => {
     // search for post with defined flairs
     const {
       data: { data },
-    } = await axios.get("https://oauth.reddit.com/r/soccer/search", {
+    } = await axios.get("https://oauth.reddit.com/r/soccer/new", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        q: 'flair:"Media"',
-        restrict_sr: "true",
         limit: 25,
-        t: "hour",
       },
     });
     return data.children;
