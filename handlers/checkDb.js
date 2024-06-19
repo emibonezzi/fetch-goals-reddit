@@ -24,6 +24,7 @@ module.exports = async (titles) => {
         // extract video url
         const directUrl = await getDirectUrl(titleObj.url);
         // resize video
+        console.log("Extracted direct video: ", directUrl);
         const videoUrlResized = await resizeVideo(directUrl);
         const news = new Goal({
           title: titleObj.title,
@@ -42,5 +43,6 @@ module.exports = async (titles) => {
     return updates;
   } catch (err) {
     console.log("Error in dealing with db...", err.message);
+    throw err;
   }
 };
