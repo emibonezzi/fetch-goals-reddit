@@ -1,6 +1,6 @@
 const domains = ["https://v.redd.it", "https://i.redd.it", "https://x.com"];
 const flairs = ["Media"];
-const regex = /^[A-Za-z\s]+ \d+ - \[\d+\] [A-Za-z\s]+.*$/;
+const regex = /^[A-Za-z\s]+ (\d+|\[\d+\]) - (\d+|\[\d+\]) [A-Za-z\s]+.*$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {
