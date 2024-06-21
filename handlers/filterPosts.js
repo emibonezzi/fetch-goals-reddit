@@ -1,17 +1,11 @@
 const domains = ["https://v.redd.it", "https://i.redd.it", "https://x.com"];
-const flairs = ["Media"];
-const regex = /^[A-Za-z\s]+ (\d+|\[\d+\]) - (\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
+const regex = /^[A-Za-z\s]+ (\d+|\[\d+\]) - (\d+|\[\d+\]) [A-Za-z\s]+.*$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {
-    const postFlair = post.data.link_flair_text;
     const postUrl = post.data.url;
 
-    if (!flairs.includes(postFlair)) {
-      return false;
-    }
-
-    if (!regex.test(post.data.title)) {
+    if (!regex.test(post.data.title.replace(/\s+/g, " ").trim())) {
       return false;
     }
 
