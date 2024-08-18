@@ -1,5 +1,6 @@
 const domains = ["https://v.redd.it", "https://i.redd.it", "https://x.com"];
-const regex = /^[A-Za-z\s]+ (\d+|\[\d+\]) - (\d+|\[\d+\]) [A-Za-z\s]+.*$/;
+const regex =
+  /^(.+?)\s(\d+)\s*-\s*(?:\[?(\d+)\]?)\s(.+?)(?:\s-\s(.+?)\s(\d+)')?$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {
