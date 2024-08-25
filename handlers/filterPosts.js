@@ -2,6 +2,7 @@ const domains = [
   "https://v.redd.it",
   "https://i.redd.it",
   "https://x.com",
+  "https://www.reddit.com",
   "https://www.goalstube.online",
   "https://www.youtube.com",
 ];
