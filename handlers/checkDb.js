@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const getDirectUrl = require("./getDirectUrl");
 const resizeVideo = require("./resizeVideo");
+const uploadToThreads = require("./uploadToThreads");
 
 const goalSchema = new mongoose.Schema({
   title: String,
@@ -30,6 +31,9 @@ module.exports = async (titles) => {
           title: titleObj.title,
           url: videoUrlResized,
         });
+        // upload to threads
+        await uploadToThreads(titleObj.title, videoUrlResized);
+        // save in db
         await news.save();
         // add to updates arr
         updates.push({

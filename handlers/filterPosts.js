@@ -1,6 +1,12 @@
-const domains = ["https://v.redd.it", "https://i.redd.it", "https://x.com"];
+const domains = [
+  "https://v.redd.it",
+  "https://i.redd.it",
+  "https://x.com",
+  "https://www.goalstube.online",
+  "https://www.youtube.com",
+];
 const regex =
-  /^(.+?)\s(\d+)\s*-\s*(?:\[?(\d+)\]?)\s(.+?)(?:\s-\s(.+?)\s(\d+)')?$/;
+  /^(.+?)\s(?:\[?(\d+)\]?)\s*-\s*(?:\[?(\d+)\]?)\s(.+?)(?:\s-\s(.+?)\s(\d+)')?$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {
