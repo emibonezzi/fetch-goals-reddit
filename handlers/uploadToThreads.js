@@ -28,13 +28,14 @@ module.exports = async (title, url) => {
       mediaContainer
     );
     // post
-    await axios.post(
+    const postId = await axios.post(
       "https://graph.threads.net/v1.0/8063816050370756/threads_publish",
       {
         creation_id: mediaID,
         access_token: process.env.THREADS_ACCESS_TOKEN,
       }
     );
+    console.log(postId);
   } catch (err) {
     console.log("Error in uploading to Threads...moving on", err.message);
   }
