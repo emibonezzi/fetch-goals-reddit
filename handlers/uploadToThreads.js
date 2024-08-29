@@ -21,12 +21,7 @@ module.exports = async (title, url) => {
       }
     );
     const mediaID = mediaContainer.data.id;
-    console.log(
-      "***** MEDIA ID *****",
-      mediaID,
-      "**** FULL MEDIA CONTAINER ****",
-      mediaContainer
-    );
+    console.log("***** MEDIA ID *****", mediaID);
     // post
     const postId = await axios.post(
       "https://graph.threads.net/v1.0/8063816050370756/threads_publish",
