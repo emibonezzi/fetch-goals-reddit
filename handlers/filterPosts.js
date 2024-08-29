@@ -6,7 +6,8 @@ const domains = [
   "https://www.goalstube.online",
   "https://www.youtube.com",
 ];
-const regex = /^[A-Za-z\s]+ (\d+|\[\d+\]) - (\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
+const regex =
+  /^[A-Za-z\s]+ (\d+|\[\d+\])\s*-\s*(\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {
