@@ -32,7 +32,7 @@ module.exports = async (titles) => {
           url: videoUrlResized,
         });
         // upload to threads
-        await uploadToThreads(titleObj.title, videoUrlResized);
+        /* await uploadToThreads(titleObj.title, videoUrlResized); */
         // save in db
         await news.save();
         // add to updates arr
