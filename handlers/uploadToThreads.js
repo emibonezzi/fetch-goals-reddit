@@ -3,21 +3,13 @@ const axios = require("axios");
 module.exports = async (title, url) => {
   try {
     // create media container
-    console.log(
-      "video_url",
-      url,
-      "text:",
-      title,
-      "access_token",
-      process.env.THREADS_ACCESS_TOKEN
-    );
     const mediaContainer = await axios.post(
       "https://graph.threads.net/v1.0/8063816050370756/threads",
       {
-        media_type: "VIDEO",
-        video_url: url,
+        media_type: "IMAGE",
+        image_url: url,
         redirect_uri: "https://oauth.pstmn.io/v1/callback",
-        text: title,
+        text: `🚨 GOL ALERT:\n${title}`,
         access_token: process.env.THREADS_ACCESS_TOKEN, // change token in 60 days from august 25 2024
       }
     );

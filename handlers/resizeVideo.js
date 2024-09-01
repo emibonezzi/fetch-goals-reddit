@@ -8,7 +8,10 @@ module.exports = async function (url) {
         video_url: url,
       }
     );
-    return res.data.resizedVideoUrl;
+    return {
+      resizedVideoUrl: res.data.resizedVideoUrl,
+      screenshotUrl: res.data.screenshotUrl,
+    };
   } catch (err) {
     console.log("Error in resizing the video...", err.message);
     throw err;

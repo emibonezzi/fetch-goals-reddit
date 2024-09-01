@@ -18,6 +18,7 @@ module.exports.handler = async function () {
     const titles = filteredPosts.map((post) => ({
       title: post.data.title,
       url: post.data.url,
+      screenshot: post.data.screenshot,
     }));
 
     // check in db for entries

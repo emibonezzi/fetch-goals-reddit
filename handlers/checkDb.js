@@ -6,6 +6,7 @@ const uploadToThreads = require("./uploadToThreads");
 const goalSchema = new mongoose.Schema({
   title: String,
   url: String,
+  screenshot: String,
 });
 
 const Goal = mongoose.model("Goal", goalSchema);
@@ -29,10 +30,11 @@ module.exports = async (titles) => {
         const videoUrlResized = await resizeVideo(directUrl);
         const news = new Goal({
           title: titleObj.title,
-          url: videoUrlResized,
+          url: videoUrlResized.resizedVideoUrl,
+          screenshot: videoUrlResized.screenshotUrl,
         });
         // upload to threads
-        /* await uploadToThreads(titleObj.title, videoUrlResized); */
+        await uploadToThreads(titleObj.title, videoUrlResized.screenshotUrl);
         // save in db
         await news.save();
         // add to updates arr
