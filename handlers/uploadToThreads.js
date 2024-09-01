@@ -9,7 +9,7 @@ module.exports = async (title, url) => {
         media_type: "IMAGE",
         image_url: url,
         redirect_uri: "https://oauth.pstmn.io/v1/callback",
-        text: `🚨 GOL ALERT:\n${title}`,
+        text: `🚨 GOOOOOOOOOAL!!!\n${title}`,
         access_token: process.env.THREADS_ACCESS_TOKEN, // change token in 60 days from august 25 2024
       }
     );
