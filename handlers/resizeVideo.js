@@ -11,6 +11,7 @@ module.exports = async function (url) {
     return {
       resizedVideoUrl: res.data.resizedVideoUrl,
       screenshotUrl: res.data.screenshotUrl,
+      mediaIdTwitter: res.data.mediaIdTwitter,
     };
   } catch (err) {
     console.log("Error in resizing the video...", err.message);

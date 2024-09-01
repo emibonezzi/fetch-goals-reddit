@@ -1,5 +1,26 @@
 const axios = require("axios");
 
+const textOptions = [
+  "⚽ GOOOOOOOOOAL!!!",
+  "🔥 GOOOOAL!!!",
+  "🎉 GOOOOOOOAL!!!",
+  "💥 GOAL!!!",
+  "⚡ GOOOOOAL!!!",
+  "🏆 GOOOOOOOOAAAAL!!!",
+  "🎯 GOOOOAL!!!",
+  "🚀 GOOOOOOAAAAL!!!",
+  "✨ GOL!!!",
+  "🌟 GOOOOOOOOOAAAAAL!!!",
+];
+
+const footer = [
+  "📲✨ Join our Telegram channel for the video: https://t.me/+BuDogIG1YEg3ZjM8",
+  "🚀📲 Subscribe to our Telegram channel for the latest video: https://t.me/+BuDogIG1YEg3ZjM8",
+  "🔥📲 Don't miss out! Join our Telegram channel to watch the video: https://t.me/+BuDogIG1YEg3ZjM8",
+  "🎥📲 Get the video on our Telegram channel: https://t.me/+BuDogIG1YEg3ZjM8",
+  "👀📲 Watch the video by joining our Telegram channel: https://t.me/+BuDogIG1YEg3ZjM8",
+];
+
 module.exports = async (title, url) => {
   try {
     // create media container
@@ -9,7 +30,9 @@ module.exports = async (title, url) => {
         media_type: "IMAGE",
         image_url: url,
         redirect_uri: "https://oauth.pstmn.io/v1/callback",
-        text: `🚨 GOOOOOOOOOAL!!!\n${title}`,
+        text: `${
+          textOptions[Math.floor(Math.random() * textOptions.length)]
+        }\n${title}\n\n${footer[Math.floor(Math.random() * footer.length)]}`,
         access_token: process.env.THREADS_ACCESS_TOKEN, // change token in 60 days from august 25 2024
       }
     );

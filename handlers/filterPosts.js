@@ -7,7 +7,7 @@ const domains = [
   "https://www.youtube.com",
 ];
 const regex =
-  /^[A-Za-z\s]+ (\d+|\[\d+\])\s*-\s*(\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
+  /^[A-Za-z\s\.*]+ (\d+|\[\d+\])\s*-\s*(\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
 
 module.exports = (posts) => {
   return posts.filter((post) => {

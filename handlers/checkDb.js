@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 const getDirectUrl = require("./getDirectUrl");
 const resizeVideo = require("./resizeVideo");
 const uploadToThreads = require("./uploadToThreads");
+const sendInChannel = require("./sendInChannel");
+const uploadToTwitter = require("./uploadToTwitter");
 
 const goalSchema = new mongoose.Schema({
   title: String,
   url: String,
   screenshot: String,
+  mediaIdTwitter: String,
 });
 
 const Goal = mongoose.model("Goal", goalSchema);
@@ -32,9 +35,14 @@ module.exports = async (titles) => {
           title: titleObj.title,
           url: videoUrlResized.resizedVideoUrl,
           screenshot: videoUrlResized.screenshotUrl,
+          mediaIdTwitter: videoUrlResized.mediaIdTwitter,
         });
         // upload to threads
         await uploadToThreads(titleObj.title, videoUrlResized.screenshotUrl);
+        // upload to telegram
+        await sendInChannel(titleObj.title, videoUrlResized.resizedVideoUrl);
+        // upload to twitter
+        await uploadToTwitter(titleObj.title, videoUrlResized.mediaIdTwitter);
         // save in db
         await news.save();
         // add to updates arr
