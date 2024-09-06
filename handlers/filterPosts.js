@@ -1,3 +1,5 @@
+const relevantTeams = require("./utils/relevantTeams");
+
 const domains = [
   "https://v.redd.it",
   "https://i.redd.it",
@@ -5,6 +7,7 @@ const domains = [
   "https://www.reddit.com",
   "https://www.goalstube.online",
   "https://www.youtube.com",
+  "https://caulse.com",
 ];
 const regex =
   /^[A-Za-z\s\.*]+ (\d+|\[\d+\])\s*-\s*(\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
@@ -12,17 +15,33 @@ const regex =
 module.exports = (posts) => {
   return posts.filter((post) => {
     const postUrl = post.data.url;
+    const postTitle = post.data.title.replace(/\s+/g, " ").trim();
 
-    if (!regex.test(post.data.title.replace(/\s+/g, " ").trim())) {
+    // Check if the title matches the regex
+    if (!regex.test(postTitle)) {
       return false;
     }
-
-    console.log("Found goal: ", post.data.title, ":", post.data.url);
 
     // Check if the post URL does not start with any of the specified domains
     const isExcludedDomain = domains.some((domain) =>
       postUrl.startsWith(domain)
     );
-    return !isExcludedDomain;
+
+    if (isExcludedDomain) {
+      return false;
+    }
+
+    // Check if the post title includes any of the relevant teams
+    const hasRelevantTeam = relevantTeams.some((team) =>
+      postTitle.includes(team)
+    );
+
+    // Return true if a relevant team is found
+    if (!hasRelevantTeam) {
+      return false;
+    }
+
+    console.log("Found goal: ", post.data.title, ":", post.data.url);
+    return true;
   });
 };
