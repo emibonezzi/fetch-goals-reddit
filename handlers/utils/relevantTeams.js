@@ -72,6 +72,7 @@ const relevantTeams = [
   "Celta Vigo",
   "Valencia",
   "Argentina",
+  "Norway",
   "Brazil",
   "France",
   "England",
@@ -91,6 +92,8 @@ const relevantTeams = [
   "Japan",
   "Serbia",
   "Colombia",
+  "Turkiye",
+  "Inter Miami",
 ];
 
 module.exports = relevantTeams;

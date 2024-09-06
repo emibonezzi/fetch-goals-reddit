@@ -7,7 +7,6 @@ const domains = [
   "https://www.reddit.com",
   "https://www.goalstube.online",
   "https://www.youtube.com",
-  "https://caulse.com",
 ];
 const regex =
   /^[A-Za-z\s\.*]+ (\d+|\[\d+\])\s*-\s*(\d+|\[\d+\]) [A-Za-z\s]+.*\s*$/;
