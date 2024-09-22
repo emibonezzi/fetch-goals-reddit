@@ -19,6 +19,9 @@ module.exports.handler = async function () {
       title: post.data.title,
       url: post.data.url,
       screenshot: post.data.screenshot,
+      redditVideo: post.data.secure_media
+        ? post.data.secure_media.reddit_video.fallback_url
+        : null,
     }));
 
     // check in db for entries

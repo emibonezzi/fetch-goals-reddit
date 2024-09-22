@@ -1,7 +1,8 @@
 const relevantTeams = require("./utils/relevantTeams");
 
 const domains = [
-  "https://v.redd.it",
+  "https://pbs.twimg.com",
+  "https://goalsarea.com",
   "https://i.redd.it",
   "https://x.com",
   "https://www.reddit.com",

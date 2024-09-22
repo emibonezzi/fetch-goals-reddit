@@ -4,6 +4,7 @@ const resizeVideo = require("./resizeVideo");
 const uploadToThreads = require("./uploadToThreads");
 const sendInChannel = require("./sendInChannel");
 const uploadToTwitter = require("./uploadToTwitter");
+const sendInChannelLink = require("./sendInChannelLink");
 
 const goalSchema = new mongoose.Schema({
   title: String,
@@ -26,8 +27,34 @@ module.exports = async (titles) => {
 
       // if news is not found
       if (!existingNews) {
-        // extract video url
-        const directUrl = await getDirectUrl(titleObj.url);
+        let directUrl;
+        // check if reddit video
+        if (!titleObj.redditVideo) {
+          // extract video url
+          directUrl = await getDirectUrl(titleObj.url);
+        } else {
+          directUrl = titleObj.redditVideo;
+        }
+
+        if (titleObj.url.startsWith("https://caulse.com")) {
+          // upload to telegram
+          await sendInChannelLink(titleObj.title, directUrl);
+          const news = new Goal({
+            title: titleObj.title,
+            url: directUrl,
+            screenshot: null,
+            mediaIdTwitter: null,
+          });
+          // save in db
+          await news.save();
+          // add to updates arr
+          updates.push({
+            title: titleObj.title,
+            url: directUrl,
+          });
+          continue;
+        }
+
         // resize video
         console.log("Extracted direct video: ", directUrl);
         const videoUrlResized = await resizeVideo(directUrl);
