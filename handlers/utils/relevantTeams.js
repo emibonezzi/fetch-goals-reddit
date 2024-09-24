@@ -67,6 +67,7 @@ const relevantTeams = [
   "Real Madrid",
   "Barcelona",
   "Atletico Madrid",
+  "Atlético Madrid",
   "Sevilla",
   "Real Sociedad",
   "Betis",

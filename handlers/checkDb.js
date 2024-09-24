@@ -5,6 +5,7 @@ const uploadToThreads = require("./uploadToThreads");
 const sendInChannel = require("./sendInChannel");
 const uploadToTwitter = require("./uploadToTwitter");
 const sendInChannelLink = require("./sendInChannelLink");
+const uploadToTwitterLink = require("./uploadToTwitterLink");
 
 const goalSchema = new mongoose.Schema({
   title: String,
@@ -45,6 +46,8 @@ module.exports = async (titles) => {
             screenshot: null,
             mediaIdTwitter: null,
           });
+          // Upload text to Twitter
+          await uploadToTwitterLink(titleObj.title);
           // save in db
           await news.save();
           // add to updates arr
