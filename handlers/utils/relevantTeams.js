@@ -86,6 +86,7 @@ const relevantTeams = [
   "Italy",
   "Portugal",
   "Spain",
+  "Porto",
   "Germany",
   "Mexico",
   "United States",
