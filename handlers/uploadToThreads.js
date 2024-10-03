@@ -1,16 +1,16 @@
 const axios = require("axios");
 
 const textOptions = [
-  "⚽ GOOOOOOOOOAL!!!",
-  "🔥 GOOOOAL!!!",
-  "🎉 GOOOOOOOAL!!!",
-  "💥 GOAL!!!",
-  "⚡ GOOOOOAL!!!",
-  "🏆 GOOOOOOOOAAAAL!!!",
-  "🎯 GOOOOAL!!!",
-  "🚀 GOOOOOOAAAAL!!!",
-  "✨ GOL!!!",
-  "🌟 GOOOOOOOOOAAAAAL!!!",
+  "⚽ ",
+  "🔥 ",
+  "🎉 ",
+  "💥 ",
+  "⚡ ",
+  "🏆 ",
+  "🎯 ",
+  "🚀 ",
+  "✨ ",
+  "🌟 ",
 ];
 
 const footer = [
@@ -32,7 +32,7 @@ module.exports = async (title, url) => {
         redirect_uri: "https://oauth.pstmn.io/v1/callback",
         text: `${
           textOptions[Math.floor(Math.random() * textOptions.length)]
-        }\n${title}\n\n${footer[Math.floor(Math.random() * footer.length)]}`,
+        }${title}\n\n${footer[Math.floor(Math.random() * footer.length)]}`,
         access_token: process.env.THREADS_ACCESS_TOKEN, // change token in 60 days from august 25 2024
       }
     );
@@ -47,7 +47,6 @@ module.exports = async (title, url) => {
         `https://graph.threads.net/v1.0/${mediaID}?fields=status&access_token=${process.env.THREADS_ACCESS_TOKEN}`
       );
       status = statusCheck.data.status;
-      console.log("Current status:", status);
 
       if (status !== "FINISHED") {
         // Wait for a few seconds before checking again

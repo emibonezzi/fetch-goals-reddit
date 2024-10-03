@@ -14,7 +14,19 @@ module.exports = async function (url) {
       mediaIdTwitter: res.data.mediaIdTwitter,
     };
   } catch (err) {
-    console.log("Error in resizing the video...", err.message);
+    console.error("Error in resizing the video:");
+
+    // Log error message
+    console.error("Message:", err.message);
+
+    // Log status code if it exists
+    if (err.response) {
+      console.error("Status Code:", err.response.status);
+      console.error("Response Data:", err.response.data);
+    } else {
+      console.error("No response received from the server.");
+    }
+
     throw err;
   }
 };

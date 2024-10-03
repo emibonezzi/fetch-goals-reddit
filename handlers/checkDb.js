@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const getDirectUrl = require("./getDirectUrl");
 const resizeVideo = require("./resizeVideo");
 const uploadToThreads = require("./uploadToThreads");
@@ -7,83 +6,60 @@ const uploadToTwitter = require("./uploadToTwitter");
 const sendInChannelLink = require("./sendInChannelLink");
 const uploadToTwitterLink = require("./uploadToTwitterLink");
 
-const goalSchema = new mongoose.Schema({
-  title: String,
-  url: String,
-  screenshot: String,
-  mediaIdTwitter: String,
-});
-
-const Goal = mongoose.model("Goal", goalSchema);
-
 module.exports = async (titles) => {
   const updates = [];
   try {
-    await mongoose.connect(
-      `mongodb+srv://admin:${process.env.MONGO_DB_PASS}@goals.qejb4s7.mongodb.net/?retryWrites=true&w=majority&appName=Goals`
-    );
-
     for (const titleObj of titles) {
-      const existingNews = await Goal.findOne({ title: titleObj.title });
-
-      // if news is not found
-      if (!existingNews) {
+      // try downloading and resizing video
+      try {
         let directUrl;
         // check if reddit video
-        if (!titleObj.redditVideo) {
+        if (!titleObj.isRedditVideo) {
           // extract video url
-          directUrl = await getDirectUrl(titleObj.url);
+          directUrl = await getDirectUrl(titleObj.externalVideoUrl);
         } else {
-          directUrl = titleObj.redditVideo;
-        }
-
-        if (titleObj.url.startsWith("https://caulse.com")) {
-          // upload to telegram
-          await sendInChannelLink(titleObj.title, directUrl);
-          const news = new Goal({
-            title: titleObj.title,
-            url: directUrl,
-            screenshot: null,
-            mediaIdTwitter: null,
-          });
-          // Upload text to Twitter
-          await uploadToTwitterLink(titleObj.title);
-          // save in db
-          await news.save();
-          // add to updates arr
-          updates.push({
-            title: titleObj.title,
-            url: directUrl,
-          });
-          continue;
+          directUrl = titleObj.fallbackUrlRedditVideo;
         }
 
         // resize video
         console.log("Extracted direct video: ", directUrl);
         const videoUrlResized = await resizeVideo(directUrl);
-        const news = new Goal({
-          title: titleObj.title,
-          url: videoUrlResized.resizedVideoUrl,
-          screenshot: videoUrlResized.screenshotUrl,
-          mediaIdTwitter: videoUrlResized.mediaIdTwitter,
-        });
+
         // upload to threads
-        await uploadToThreads(titleObj.title, videoUrlResized.screenshotUrl);
+        await uploadToThreads(
+          titleObj.commentary,
+          videoUrlResized.screenshotUrl
+        );
         // upload to telegram
-        await sendInChannel(titleObj.title, videoUrlResized.resizedVideoUrl);
+        await sendInChannel(
+          titleObj.commentary,
+          videoUrlResized.resizedVideoUrl
+        );
         // upload to twitter
-        await uploadToTwitter(titleObj.title, videoUrlResized.mediaIdTwitter);
-        // save in db
-        await news.save();
+        await uploadToTwitter(
+          titleObj.commentary,
+          videoUrlResized.mediaIdTwitter
+        );
         // add to updates arr
         updates.push({
-          title: titleObj.title,
+          title: titleObj.originalPostTitle,
           url: directUrl,
         });
+      } catch (err) {
+        // if err in downloading and resizing
+        // upload to telegram
+        await sendInChannelLink(titleObj.commentary, titleObj.externalVideoUrl);
+        // Upload text to Twitter
+        await uploadToTwitterLink(titleObj.originalPostTitle);
+        // add to updates arr
+        updates.push({
+          title: titleObj.originalPostTitle,
+          url: titleObj.externalVideoUrl,
+        });
+        continue;
       }
     }
 
-    mongoose.connection.close();
     return updates;
   } catch (err) {
     console.log("Error in dealing with db...", err.message);

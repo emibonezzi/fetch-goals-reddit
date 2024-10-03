@@ -10,16 +10,16 @@ const client = new TwitterApi({
 const rwClient = client.readWrite;
 
 const textOptions = [
-  "⚽ GOOOOOOOOOAL!!!",
-  "🔥 GOOOOAL!!!",
-  "🎉 GOOOOOOOAL!!!",
-  "💥 GOAL!!!",
-  "⚡ GOOOOOAL!!!",
-  "🏆 GOOOOOOOOAAAAL!!!",
-  "🎯 GOOOOAL!!!",
-  "🚀 GOOOOOOAAAAL!!!",
-  "✨ GOL!!!",
-  "🌟 GOOOOOOOOOAAAAAL!!!",
+  "⚽ ",
+  "🔥 ",
+  "🎉 ",
+  "💥 ",
+  "⚡ ",
+  "🏆 ",
+  "🎯 ",
+  "🚀 ",
+  "✨ ",
+  "🌟 ",
 ];
 
 const footer = [
@@ -36,7 +36,7 @@ module.exports = async (title) => {
     await rwClient.v2.tweet({
       text: `${
         textOptions[Math.floor(Math.random() * textOptions.length)]
-      }\n${title}\n\n${footer[Math.floor(Math.random() * footer.length)]}`,
+      }${title}\n\n${footer[Math.floor(Math.random() * footer.length)]}`,
     });
   } catch (err) {
     console.log("Unknown error in uploading to Twitter...", err.message);
