@@ -9,9 +9,8 @@ module.exports = async function (url) {
       }
     );
     return {
+      original_url: res.data.original_url,
       resizedVideoUrl: res.data.resizedVideoUrl,
-      screenshotUrl: res.data.screenshotUrl,
-      mediaIdTwitter: res.data.mediaIdTwitter,
     };
   } catch (err) {
     console.error("Error in resizing the video:");

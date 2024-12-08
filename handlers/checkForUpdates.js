@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Goal = require("../models/goalModel");
+const RedditPost = require("../models/redditPost");
 
 module.exports = async (titles) => {
   const updates = [];
@@ -12,17 +12,15 @@ module.exports = async (titles) => {
     for (const titleObj of titles.filter(
       (post) => post.data.link_flair_text === "Media"
     )) {
-      const existingNews = await Goal.findOne({
+      const existingNews = await RedditPost.findOne({
         title: titleObj.data.title.trim(),
       });
 
       // if news is not found
       if (!existingNews) {
-        const news = new Goal({
+        const news = new RedditPost({
           title: titleObj.data.title.trim(),
           url: titleObj.data.url,
-          screenshot: null,
-          mediaIdTwitter: null,
         });
         // save in db
         await news.save();
@@ -31,7 +29,6 @@ module.exports = async (titles) => {
       }
     }
 
-    mongoose.connection.close();
     return updates;
   } catch (err) {
     console.log("Error in dealing with db...", err.message);

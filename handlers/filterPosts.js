@@ -1,20 +1,20 @@
 const axios = require("axios");
 const input = `You are receiving a post object retrieved from the reddit API from the r/soccer subreddit. You need to analyze it and respond with a json object shaped like this: 
-  { isItGoalUpdateVideo: boolean, // ONLY GOAL VIDEOS in this format "Arsenal 1 - 0 West Ham - Declan Rice" or variations of this format
-   isHighlightVideo: boolean, // everything that is not isItGoalUpdateVideo but is a replay, a skill video, a red card, a var review, an highlight reel
-   isWomensTeam: boolean,
+  { 
+   isItGoalUpdateVideo: boolean, // ONLY GOAL VIDEOS in this format "Arsenal 1 - 0 West Ham - Declan Rice" or variations of this format
+   isHighlightVideo: boolean, // everything that is not isItGoalUpdateVideo but is a replay, a skill video, a red card, a var review. if it is an interview RETURN FALSE
+   isWomensTeam: boolean, // 
    isYouthMatch: boolean, // is youth match, under 19 and such
    atLeastOneTeamInTopFiveLeagues: boolean, // return true only if at least one team belongs to Serie A, Bundesliga, Ligue 1, La Liga, Premier League, Turkish Süper Lig, Portuguese Primeira Liga.
-   isInternationalCompetition: boolean // if goalVideo, analyze the name of the two teams. if they belong to different leagues return true
-   isFamousPlayerInvolved: boolean, // is a famous player involved in the action, like Ronaldo, Messi etc
+   isInternationalCompetition: boolean // if goalVideo true, analyze the name of the two teams. if they belong to different leagues return true
    homeTeam: string | null,
-   awayTeam: string | null, 
-   goalScorer: string | null,
-   isRedditVideo: boolean,
-   fallbackUrlRedditVideo: string | null,
-   externalVideoUrl: string |null,
+   awayTeam: string | null,
+   league: string | null, // if homeTeam and awayTeam are from the same country, infer the league name from the top leagues in Europe, if they're not from the same country return false 
+   goalScorer: string | null, // if isItGoalUpdateVideo true, return the goal scorer
+   isRedditVideo: boolean // if the video is posted direcly on reddit return true
+   fallbackUrlRedditVideo: string | null, // if isRedditVideo true, return the fallback_url
+   externalVideoUrl: string | null, // if external video return url
    originalPostTitle: string,
-   commentary: string // just rephrase originalPostTitle but add emoji
    } 
    Output only the JSON, without any additional text or explanations.`;
 require("dotenv").config();
@@ -23,15 +23,13 @@ require("dotenv").config();
 
 module.exports = async (posts) => {
   try {
-    let filteredPosts = posts
-      .filter((post) => post.data.link_flair_text === "Media")
-      .map((post) => ({
-        title: post.data.title,
-        url: post.data.url,
-        fallbackUrlRedditVideo: post.data.is_video
-          ? post.data.secure_media.reddit_video.fallback_url
-          : null,
-      }));
+    let filteredPosts = posts.map((post) => ({
+      title: post.data.title,
+      url: post.data.url,
+      fallbackUrlRedditVideo: post.data.is_video
+        ? post.data.secure_media.reddit_video.fallback_url
+        : null,
+    }));
     if (!filteredPosts || filteredPosts.length === 0) return filteredPosts;
     // get open ai to filter
     const postsFilteredByAI = await Promise.all(
@@ -69,10 +67,8 @@ module.exports = async (posts) => {
       .filter((post) => post.isItGoalUpdateVideo || post.isHighlightVideo) // include goal video or highlights
       .filter(
         (post) =>
-          post.atLeastOneTeamInTopFiveLeagues ||
-          post.isFamousPlayerInvolved ||
-          post.isInternationalCompetition
-      ); // only top teams or top players action
+          post.atLeastOneTeamInTopFiveLeagues || post.isInternationalCompetition
+      );
 
     console.log(finalFiltered);
     return finalFiltered;

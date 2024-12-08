@@ -10,7 +10,7 @@ module.exports = async (accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
       params: {
-        limit: 40,
+        limit: 5,
       },
     });
     return data.children;
